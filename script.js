@@ -8,13 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const totalImages = 26;
   const imageBasePath = 'assets/images/';
 
+  // Function to load prev and next image in cache beforehand for faster loading (avoid any flicker)
   function preloadImage(index) {
     if (index >= 1 && index <= totalImages) {
-      const img = new Image(); // Create a new, invisible image object
+      const img = new Image();
       img.src = `${imageBasePath}image${index}.webp`; // This starts loading the image
     }
   }
 
+  // Function to update current image, adds transition, preloads 2 images and disables nav buttons at the end of slides
   function updateImage() {
     imageElement.classList.add('fade-out');
 
@@ -36,12 +38,13 @@ document.addEventListener('DOMContentLoaded', function () {
     preloadImage(currentIndex + 1);
     preloadImage(currentIndex - 1);
 
+    // Disables next and previous button at extreme slide (when index==1 or index==last)
     prevBtn.disabled = currentIndex === 1;
     nextBtn.disabled = currentIndex === totalImages;
     document.getElementById('story-counter').textContent = `${currentIndex} / ${totalImages}`;
   }
 
-
+  // Prev button functionality
   prevBtn.addEventListener('click', () => {
     if (currentIndex > 1) {
       currentIndex--;
@@ -49,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Next button functionality
   nextBtn.addEventListener('click', () => {
     if (currentIndex < totalImages) {
       currentIndex++;
